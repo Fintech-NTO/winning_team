@@ -1,33 +1,33 @@
-.number {
+.baseline {
     display: flex;
     flex-direction: column;
-    width: 216px;
+    width: 640px;
     background-color: white;
     border-radius: 16px;
     margin: 16px;
 }
 
-.number .name {
+.baseline .name {
     margin-top: 16px;
 }
 
-.number * {
+.baseline * {
     background-color: white;
 }
 
-.number .value {
+.baseline .value {
     font-weight: bold;
     font-size: 200%;
 }
 
-.number .green {
+.baseline .green {
     color: #50B93E;
 }
 
-.number .red {
+.baseline .red {
     color: #b93e3e;
 }
 
-.number .period {
+.baseline .period {
     margin-bottom: 16px;
 }
