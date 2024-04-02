@@ -1,0 +1,50 @@
+* {
+    background-color: #F3F3F3;
+}
+
+header {
+    display: flex;
+    justify-content: space-between;
+    padding-left: 3vw;
+    padding-right: 3vw;
+    padding-top: 3vh;
+    padding-bottom: 3vh;
+    background-color: #FFFFFF;
+    user-select: none;
+}
+
+header * {
+    background-color: #FFFFFF;
+}
+
+header .logo {
+    font-weight: bold;
+    cursor: pointer;
+}
+
+header .logo:hover {
+    color: #4272DC;
+    transition: color 0.2s ease-out;
+}
+
+header .logo:not(:hover) {
+    color: #000000;
+    transition: color 0.2s ease-out;
+}
+
+
+header nav a {
+    margin: 16px;
+    cursor: pointer;
+}
+
+header nav .selected {
+    color: #4272DC;
+}
+
+.main {
+    margin-top: 16px;
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
