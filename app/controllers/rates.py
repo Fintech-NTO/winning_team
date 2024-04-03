@@ -3,8 +3,8 @@ from datetime import date
 import requests
 from bs4 import BeautifulSoup
 
-from common.cb_format import cb_format, iso_from_cb
-from model.fastapi import Currency, DatedCurrency, CurrencyForPeriod, Metal, DatedMetal, MetalForPeriod, Company, \
+from app.common.cb_format import cb_format, iso_from_cb
+from app.model.fastapi import Currency, DatedCurrency, CurrencyForPeriod, Metal, DatedMetal, MetalForPeriod, Company, \
     DatedCandle
 
 codes = {'AUD': 'R01010', 'AZN': 'R01020', 'AMD': 'R01060', 'BYN': 'R01090', 'BGN': 'R01100', 'BRL': 'R01115',

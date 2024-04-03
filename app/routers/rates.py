@@ -1,6 +1,6 @@
 from fastapi import APIRouter
 
-from controllers.rates import RatesController, codes
+from app.controllers.rates import RatesController, codes
 
 router = APIRouter(prefix="/rates")
 
