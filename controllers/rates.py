@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from common.cb_format import cb_format, iso_from_cb
-from model.fastapi import Currency, DatedCurrency, CurrencyForPeriod, Metal
+from model.fastapi import Currency, DatedCurrency, CurrencyForPeriod, Metal, DatedMetal, MetalForPeriod
 
 codes = {'AUD': 'R01010', 'AZN': 'R01020A', 'AMD': 'R01060', 'BYN': 'R01090B', 'BGN': 'R01100', 'BRL': 'R01115',
          'HUF': 'R01135', 'VND': 'R01150', 'HKD': 'R01200', 'GEL': 'R01210', 'DKK': 'R01215', 'AED': 'R01230',
@@ -75,4 +75,25 @@ class RatesController:
 
     @staticmethod
     def get_metal_for_period(metal: str, from_iso: str, to_iso: str):
-        pass
+        page = requests.get(
+            f"https://www.cbr.ru/hd_base/metall/metall_base_new/?UniDbQuery.Posted=True&UniDbQuery.From={cb_format(from_iso)}&UniDbQuery.To={cb_format(to_iso)}&UniDbQuery.Gold=true&UniDbQuery.Silver=true&UniDbQuery.Platinum=true&UniDbQuery.Palladium=true&UniDbQuery.so=1")
+        soup = BeautifulSoup(page.text, "html.parser")
+        metals = []
+        for tr in soup.find_all("tr")[1:]:
+            td = tr.find_next('td')
+            _, td = td.text.replace(" ", ""), td.find_next('td')
+            gold, td = td.text.replace(" ", ""), td.find_next('td')
+            silver, td = td.text.replace(" ", ""), td.find_next('td')
+            platinum, td = td.text.replace(" ", ""), td.find_next('td')
+            palladium = td.text.replace(" ", "")
+            if metal == 'Au':
+                metals.append(DatedMetal(date=iso_from_cb(_), price=float(gold.replace(",", "."))))
+            elif metal == 'Ag':
+                metals.append(DatedMetal(date=iso_from_cb(_), price=float(silver.replace(",", "."))))
+            elif metal == 'Pt':
+                metals.append(DatedMetal(date=iso_from_cb(_), price=float(platinum.replace(",", "."))))
+            elif metal == 'Pd':
+                metals.append(DatedMetal(date=iso_from_cb(_), price=float(palladium.replace(",", "."))))
+        return MetalForPeriod(code=metal,
+                              name={'Au': 'Золото', 'Ag': 'Серебро', 'Pt': 'Платина', 'Pd': 'Палладий'}[metal],
+                              metals=reversed(metals))

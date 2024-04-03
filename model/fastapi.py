@@ -27,7 +27,12 @@ class Metal(BaseModel):
     price: float
 
 
+class DatedMetal(BaseModel):
+    date: str
+    price: float
+
+
 class MetalForPeriod(BaseModel):
     code: str
     name: str
-    metals: List[Metal]
+    metals: List[DatedMetal]

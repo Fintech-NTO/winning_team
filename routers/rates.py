@@ -32,4 +32,4 @@ def get_metals_for_date(date: str):
 
 @router.get("/metal/{metal}/{from_date}/{to_date}")
 def get_metals_for_date(metal: str, from_date: str, to_date: str):
-    return
+    return RatesController.get_metal_for_period(metal, from_date, to_date)
