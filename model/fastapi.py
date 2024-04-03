@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from typing import List
 
 
 class Currency(BaseModel):
@@ -17,10 +18,16 @@ class DatedCurrency(BaseModel):
 class CurrencyForPeriod(BaseModel):
     code: str
     name: str
-    currencies: list[DatedCurrency]
+    currencies: List[DatedCurrency]
 
 
 class Metal(BaseModel):
     code: str
     name: str
     price: float
+
+
+class MetalForPeriod(BaseModel):
+    code: str
+    name: str
+    metals: List[Metal]
