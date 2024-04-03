@@ -33,3 +33,13 @@ def get_metals_for_date(date: str):
 @router.get("/metal/{metal}/{from_date}/{to_date}")
 def get_metals_for_date(metal: str, from_date: str, to_date: str):
     return RatesController.get_metal_for_period(metal, from_date, to_date)
+
+
+@router.get("/stocks/")
+def get_all_companies():
+    return RatesController.get_all_companies()
+
+
+@router.get("/stocks/{ticker}/{from_date}/{to_date}")
+def get_prices_for_period(ticker: str, from_date: str, to_date: str):
+    return RatesController.get_candles_for_period(ticker, from_date, to_date)

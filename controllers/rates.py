@@ -4,7 +4,8 @@ import requests
 from bs4 import BeautifulSoup
 
 from common.cb_format import cb_format, iso_from_cb
-from model.fastapi import Currency, DatedCurrency, CurrencyForPeriod, Metal, DatedMetal, MetalForPeriod
+from model.fastapi import Currency, DatedCurrency, CurrencyForPeriod, Metal, DatedMetal, MetalForPeriod, Company, \
+    DatedCandle
 
 codes = {'AUD': 'R01010', 'AZN': 'R01020A', 'AMD': 'R01060', 'BYN': 'R01090B', 'BGN': 'R01100', 'BRL': 'R01115',
          'HUF': 'R01135', 'VND': 'R01150', 'HKD': 'R01200', 'GEL': 'R01210', 'DKK': 'R01215', 'AED': 'R01230',
@@ -97,3 +98,20 @@ class RatesController:
         return MetalForPeriod(code=metal,
                               name={'Au': 'Золото', 'Ag': 'Серебро', 'Pt': 'Платина', 'Pd': 'Палладий'}[metal],
                               metals=reversed(metals))
+
+    @staticmethod
+    def get_all_companies():
+        res = requests.get('https://iss.moex.com/iss/engines/stock/markets/shares/securities.json?iss.json=extended').json()[1]['securities'][1]
+        companies = []
+        for company in res:
+            companies.append(Company(ticker=company['SECID'], name=company['SHORTNAME']))
+        return companies
+
+    @staticmethod
+    def get_candles_for_period(ticker: str, from_date: str, to_date: str):
+        res = requests.get(f"http://iss.moex.com/iss/engines/stock/markets/shares/securities/{ticker}/candles.json?from={from_date}&till={to_date}&interval=24&iss.json=extended").json()[
+            1]['candles'][1]
+        candles = []
+        for candle in res:
+            candles.append(DatedCandle(date=candle['end'].split(' ')[0], close=candle['close'], volume=int(candle['volume'])))
+        return candles

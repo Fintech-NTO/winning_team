@@ -36,3 +36,14 @@ class MetalForPeriod(BaseModel):
     code: str
     name: str
     metals: List[DatedMetal]
+
+
+class Company(BaseModel):
+    ticker: str
+    name: str
+
+
+class DatedCandle(BaseModel):
+    date: str
+    close: float
+    volume: int
