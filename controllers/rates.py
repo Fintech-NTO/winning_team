@@ -4,7 +4,7 @@ import requests
 from bs4 import BeautifulSoup
 
 from common.cb_format import cb_format, iso_from_cb
-from model.fastapi import Currency, DatedCurrency, CurrencyForPeriod
+from model.fastapi import Currency, DatedCurrency, CurrencyForPeriod, Metal
 
 codes = {'AUD': 'R01010', 'AZN': 'R01020A', 'AMD': 'R01060', 'BYN': 'R01090B', 'BGN': 'R01100', 'BRL': 'R01115',
          'HUF': 'R01135', 'VND': 'R01150', 'HKD': 'R01200', 'GEL': 'R01210', 'DKK': 'R01215', 'AED': 'R01230',
@@ -37,7 +37,8 @@ class RatesController:
     @staticmethod
     def get_currency_for_period(currency: str, from_iso: str, to_iso: str):
         currencies = []
-        page = requests.get(f"https://www.cbr.ru/currency_base/dynamics/?UniDbQuery.Posted=True&UniDbQuery.so=1&UniDbQuery.mode=1&UniDbQuery.date_req1=&UniDbQuery.date_req2=&UniDbQuery.VAL_NM_RQ={codes[currency]}&UniDbQuery.From={cb_format(from_iso)}&UniDbQuery.To={cb_format(to_iso)}")
+        page = requests.get(
+            f"https://www.cbr.ru/currency_base/dynamics/?UniDbQuery.Posted=True&UniDbQuery.so=1&UniDbQuery.mode=1&UniDbQuery.date_req1=&UniDbQuery.date_req2=&UniDbQuery.VAL_NM_RQ={codes[currency]}&UniDbQuery.From={cb_format(from_iso)}&UniDbQuery.To={cb_format(to_iso)}")
         soup = BeautifulSoup(page.text, "html.parser")
 
         for tr in soup.find_all("tr")[2:]:
@@ -55,7 +56,22 @@ class RatesController:
 
     @staticmethod
     def get_metals_for_date(iso: str):
-        pass
+        page = requests.get(
+            f"https://www.cbr.ru/hd_base/metall/metall_base_new/?UniDbQuery.Posted=True&UniDbQuery.From={cb_format(iso)}&UniDbQuery.To={cb_format(iso)}&UniDbQuery.Gold=true&UniDbQuery.Silver=true&UniDbQuery.Platinum=true&UniDbQuery.Palladium=true&UniDbQuery.so=1")
+        soup = BeautifulSoup(page.text, "html.parser")
+        metals = []
+        for tr in soup.find_all("tr")[1:]:
+            td = tr.find_next('td')
+            _, td = td.text.replace(" ", ""), td.find_next('td')
+            gold, td = td.text.replace(" ", ""), td.find_next('td')
+            silver, td = td.text.replace(" ", ""), td.find_next('td')
+            platinum, td = td.text.replace(" ", ""), td.find_next('td')
+            palladium = td.text.replace(" ", "")
+            metals.append(Metal(code='Au', name='Золото', price=float(gold.replace(",", "."))))
+            metals.append(Metal(code='Ag', name='Золото', price=float(silver.replace(",", "."))))
+            metals.append(Metal(code='Pt', name='Платина', price=float(platinum.replace(",", "."))))
+            metals.append(Metal(code='Pd', name='Палладий', price=float(palladium.replace(",", "."))))
+        return metals
 
     @staticmethod
     def get_metal_for_period(metal: str, from_iso: str, to_iso: str):

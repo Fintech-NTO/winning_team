@@ -18,3 +18,9 @@ class CurrencyForPeriod(BaseModel):
     code: str
     name: str
     currencies: list[DatedCurrency]
+
+
+class Metal(BaseModel):
+    code: str
+    name: str
+    price: float

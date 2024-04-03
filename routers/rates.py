@@ -7,7 +7,7 @@ router = APIRouter(prefix="/rates")
 
 @router.get("/available_currencies")
 def get_available_currencies():
-    return codes.keys()
+    return list(codes.keys())
 
 
 @router.get("/currencies/{date}")
@@ -27,7 +27,7 @@ def get_available_metals():
 
 @router.get("/metals/{date}")
 def get_metals_for_date(date: str):
-    return
+    return RatesController.get_metals_for_date(date)
 
 
 @router.get("/metal/{metal}/{from_date}/{to_date}")
