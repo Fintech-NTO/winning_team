@@ -1,11 +1,35 @@
-import "./Number.css";
+import "./Value.css";
 import { ChartContainer, AreaPlot } from '@mui/x-charts';
 import { LinePlot, MarkPlot } from '@mui/x-charts/LineChart';
+import "./../../icons/close.png";
+
 
 
 function Number(props) {
+    let offsetX,offsetY;
+    const move=e=>
+    {
+        const el=e.target
+        console.log(e.pageY-offsetY);
+        if (e.pageY-offsetY > 41) {
+            el.style.left = `${e.pageX-offsetX}px`
+            el.style.top = `${e.pageY-offsetY}px`
+        }
+    }
+    const add=e=>
+    {
+        const el=e.target
+        offsetX=e.clientX-el.getBoundingClientRect().left
+        offsetY=e.clientY-el.getBoundingClientRect().top
+        el.addEventListener('mousemove',move)
+    }
+    const remove=e=>{
+        const el=e.target
+        el.removeEventListener('mousemove',move)
+    }
+
     return (
-        <div class="number">
+        <div class="number" onMouseDown={add} onMouseUp={remove} onMouseLeave={remove} style={{left: props.left + "px", top: props.top + "px"}}> 
             <div class="name">{props.name}</div>
             <div class="value">{props.value} {props.currency}</div>
             <div width="200" height="200">

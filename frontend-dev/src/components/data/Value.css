@@ -1,0 +1,54 @@
+.number {
+    position: absolute;
+    /* display: flex; */
+    /* flex-direction: column; */
+    width: 216px;
+    height: 366px;
+    background-color: white;
+    border-radius: 16px;
+    margin: 16px;
+}
+
+.number hr {
+    width: 70%;
+    margin-top: 25px;
+    margin-bottom: 25px;
+}
+
+.number * {
+    user-select: none;
+}
+
+.number * {
+    background-color: white;
+}
+
+.number .name {
+    border: none;
+    text-align: center;
+    margin-bottom: 12px;
+    outline: none;
+    width: 68px;
+}
+
+
+.number .value {
+    font-weight: bold;
+    font-size: 200%;
+}
+
+.number .green {
+    color: #50B93E;
+}
+
+.number .red {
+    color: #b93e3e;
+}
+
+.number .period {
+    color: #C9C9C9;
+    border: none;
+    text-align: center;
+    margin-bottom: 12px;
+    outline: none;
+}

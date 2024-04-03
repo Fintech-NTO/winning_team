@@ -1,5 +1,6 @@
 * {
     background-color: #F3F3F3;
+    user-select: none;
 }
 
 header {
@@ -7,8 +8,8 @@ header {
     justify-content: space-between;
     padding-left: 3vw;
     padding-right: 3vw;
-    padding-top: 3vh;
-    padding-bottom: 3vh;
+    padding-top: 1vh;
+    padding-bottom: 1vh;
     background-color: #FFFFFF;
     user-select: none;
 }
@@ -18,6 +19,9 @@ header * {
 }
 
 header .logo {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-weight: bold;
     cursor: pointer;
 }
@@ -42,9 +46,21 @@ header nav .selected {
     color: #4272DC;
 }
 
+header nav .remove {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+header nav .remove input {
+    width: 24px;
+    height: 24px;
+}
+
+
 .main {
-    margin-top: 16px;
+    /* margin-top: 16px;
     display: flex;
     justify-content: space-around;
-    flex-wrap: wrap;
+    flex-wrap: wrap; */
 }
