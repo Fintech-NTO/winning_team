@@ -8,7 +8,7 @@ import CONST from "../../CONST";
 import { componentsContext } from "../pages/MainPage";
 
 
-function ShareValue(props) {
+function MetalValue(props) {
     // let offsetX;
     // let offsetY;
     // let inFocus=false;
@@ -35,16 +35,16 @@ function ShareValue(props) {
         inFocus.current = false;
     }
 
-    const [share, setShare] = useState();
-    const [shareList, setShareList] = useState();
-    const [shareName, setShareName] = useState();
-    const [shareValue, setShareValue] = useState();
-    const [shareChart, setShareChart] = useState([0, 0, 0, 0, 0, 0, 0]);
+    const [metal, setMetal] = useState("Au");
+    const [metalList, setMetalList] = useState(["Au", "Ag", "Pt", "Pd"]);
+    const [metalName, setMetalName] = useState("Серебро");
+    const [metalValue, setMetalValue] = useState();
+    const [metalChart, setMetalChart] = useState([0, 0, 0, 0, 0, 0, 0]);
     const [xAxis, setXAxis] = useState([1, 2, 3, 4, 5, 6, 7]);
-    const [shareProcent, setShareProcent] = useState();
+    const [metalProcent, setMetalProcent] = useState();
     const [sharePeriod, setSharePeriod] = useState("week");
-    const [sp, setSp] = useState(["ABIO", "week"]);
-    let companiesNames = useRef();
+    const [mp, setMp] = useState(["Au", "week"]);
+    let metalNames = useRef({"Au": "Серебро", "Ag": "Золото", "Pt": "Платина", "Pd": "Палладий"});
     const { components, setComponents } = useContext(componentsContext);
 
     function removeComponent() {
@@ -65,29 +65,16 @@ function ShareValue(props) {
     }
 
     useEffect(() => {
-        axios.get(CONST.apiUrl + "/rates/stocks/").then((res) => {
-            let _companiesNames = {};
-            let _shareList = [];
-            for (let i = 0; i < res.data.length; i++) {
-                const element = res.data[i];
-                _shareList.push(element.ticker);
-                _companiesNames[element.ticker] = element.name;
-            }
-            setShareList(_shareList);
-            setShare(_shareList[0]);
-            companiesNames.current = _companiesNames;
-            updateData(_shareList[0], sharePeriod);
-        })
         const id = setInterval(() => {
-            setSp((_sp) => {
-                updateData(_sp[0], _sp[1]);
-                return _sp;
+            setMp((_mp) => {
+                updateData(_mp[0], _mp[1]);
+                return _mp;
             })
         }, 1000)
         return () => {
             clearInterval(id)
         }
-    }, [setShare, setShareList])
+    }, [setMetal, setMetalList])
 
 
     function updateData(s, p) {
@@ -105,46 +92,46 @@ function ShareValue(props) {
             start.setDate(start.getDate() - 366);
             start = start.toISOString().split("T")[0];
         }
-        axios.get(CONST.apiUrl + "/rates/stocks/" + s + "/" + start + "/" + end).then((res) => {
+        axios.get(CONST.apiUrl + "/rates/metal/" + s + "/" + start + "/" + end).then((res) => {
             let json = res.data;
-            if (json.length > 0) {
-                setShareValue(json[json.length - 1].close.toFixed(2));
-                setShareName(companiesNames.current[s]);
-                setShareProcent(((json[json.length - 1].close - json[0].close) / json[json.length - 1].close * 100).toFixed(1))
+            if (json.metals.length > 0) {
+                setMetalValue(json.metals[json.metals.length - 1].price.toFixed(2));
+                setMetalName(metalNames.current[s]);
+                setMetalProcent(((json.metals[json.metals.length - 1].price - json.metals[0].price) / json.metals[json.metals.length - 1].price * 100).toFixed(1))
                 let chart = [];
                 let min_v = 1000000;
-                for (let i = 0; i < json.length; i++) {
-                    const el = json[i].close;
+                for (let i = 0; i < json.metals.length; i++) {
+                    const el = json.metals[i].price;
                     if (min_v > el) {
                         min_v = el;
                     }
                     chart.push(el)
                 }
                 chart = chart.map((el) => { return (el - min_v) + 1 })
-                setShareChart(chart);
+                setMetalChart(chart);
                 let _xAxis = []
                 for (let i = 1; i < chart.length + 1; i++) {
                     _xAxis.push(i);
                 }
                 setXAxis(_xAxis);
             } else {
-                setShareValue(0);
-                setShareProcent(0);
-                setShareChart([]);
+                setMetalValue(0);
+                setMetalProcent(0);
+                setMetalChart([]);
                 setXAxis([]);
             }
         })
     }
 
     function changeCurrency(e) {
-        setShare(e.target.value);
-        setSp([e.target.value, sharePeriod]);
+        setMetal(e.target.value);
+        setMp([e.target.value, sharePeriod]);
         // updateData(e.target.value, currencyPeriod);
     }
 
     function changePeriod(e) {
         setSharePeriod(e.target.value);
-        setSp([share, e.target.value]);
+        setMp([metal, e.target.value]);
         // updateData(currency, e.target.value);
     }
 
@@ -152,22 +139,22 @@ function ShareValue(props) {
         <div class="number" onMouseMove={move} onMouseDown={add} onMouseUp={remove} onMouseLeave={remove} style={{ left: props.left + "px", top: props.top + "px" }}>
             <img src={closeImg} alt="" class="close" onClick={removeComponent} />
             <hr />
-            {shareName}
+            {metalName}
             {/* {props.uuid} */}  
             <select class="name" onChange={changeCurrency}>
-                {shareList && shareList.map(s => (
+                {metalList && metalList.map(s => (
                     <option value={s}>{s}</option>
                 ))}
             </select>
             
-            <div class="value">{shareValue} ₽</div>
+            <div class="value">{metalValue} ₽</div>
             <div width="200" height="200">
                 <ChartContainer
                     width={210}
                     height={160}
                     series={[
                         {
-                            data: shareChart,
+                            data: metalChart,
                             type: 'line',
                             area: true,
                             stack: 'total',
@@ -179,7 +166,7 @@ function ShareValue(props) {
                     <AreaPlot />
                 </ChartContainer>
             </div>
-            <div className={shareProcent > 0 ? "green growth" : "red growth"}>{shareProcent > 0 ? <>+</> : <></>}{shareProcent} %</div>
+            <div className={metalProcent > 0 ? "green growth" : "red growth"}>{metalProcent > 0 ? <>+</> : <></>}{metalProcent} %</div>
             <select class="period" onChange={changePeriod}>
                 <option value="week">За неделю</option>
                 <option value="month">За Месяц</option>
@@ -189,4 +176,4 @@ function ShareValue(props) {
     )
 }
 
-export default ShareValue;
+export default MetalValue;

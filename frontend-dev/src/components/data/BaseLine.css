@@ -8,6 +8,8 @@
     border-radius: 16px;
     margin: 16px;
     position: absolute;
+    top: 84px;
+    left: 16px;
 }
 
 .baseline .close {
@@ -33,7 +35,7 @@
 .baseline .inputs {
     margin-top: 12px;
     display: flex;
-    width: 75%;
+    width: 85%;
     justify-content: space-between;
 }
 
@@ -63,4 +65,22 @@
 
 .baseline .period {
     margin-bottom: 16px;
+}
+
+.baseline .inputs_bottom {
+    margin-bottom: 12px;
+    display: flex;
+    width: 75%;
+    justify-content: space-between;
+}
+
+.baseline .inputs_bottom input {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
+}
+
+.baseline .inputs_bottom *:hover {
+    background-color: #F3F3F3;
 }

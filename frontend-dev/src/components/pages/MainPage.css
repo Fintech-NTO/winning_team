@@ -1,17 +1,27 @@
 body {
     background-color: #F3F3F3;
     user-select: none;
+    margin: 0;
+    padding: 0;
 }
 
 header {
+    position: fixed;
+    width: 94vw;
+    top: 0px;
+    left: 0px;
+    margin: 0px;
     display: flex;
     justify-content: space-between;
     padding-left: 3vw;
-    padding-right: 3vw;
+    padding-right: 15vw;
     padding-top: 1vh;
     padding-bottom: 1vh;
     background-color: #FFFFFF;
     user-select: none;
+    z-index: 10;
+    border-bottom: #F3F3F3 solid 1px;
+    
 }
 
 /* header * {

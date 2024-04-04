@@ -3,6 +3,10 @@ import CurrencyValue from "../data/CurrencyValue.jsx";
 import CurrencyBaseLine from "../data/CurrencyBaseLine.jsx";
 import {v4 as uuidv4} from "uuid";
 import { useEffect, useState, useContext, createContext } from "react";
+import ShareValue from "../data/ShareValue.jsx";
+import ShareBaseLine from "../data/shareBaseLine.jsx";
+import MetalValue from "../data/MetalValue.jsx";
+import MetalBaseLine from "../data/MetalBaseLine.jsx";
 
 export const componentsContext = createContext([]);
 
@@ -36,6 +40,34 @@ function MainPage() {
     setComponents(_components);
   }
 
+  function addShareValue() {
+    let _components = [...components];
+    let uuid = uuidv4();
+    _components.push(<ShareValue uuid={uuid}></ShareValue>);
+    setComponents(_components);
+  }
+
+  function addShareBaseLine() {
+    let _components = [...components];
+    let uuid = uuidv4();
+    _components.push(<ShareBaseLine uuid={uuid}></ShareBaseLine>);
+    setComponents(_components);
+  }
+
+  function addMetalValue() {
+    let _components = [...components];
+    let uuid = uuidv4();
+    _components.push(<MetalValue uuid={uuid}></MetalValue>);
+    setComponents(_components);
+  }
+
+  function addMetalBaseLine() {
+    let _components = [...components];
+    let uuid = uuidv4();
+    _components.push(<MetalBaseLine uuid={uuid}></MetalBaseLine>);
+    setComponents(_components);
+  }
+
   function saveDashboard() {
     console.log(JSON.stringify(components))
   }
@@ -63,8 +95,17 @@ function MainPage() {
               <i class="fa fa-caret-down"></i>
             </button>
             <div class="dropdown-content">
-              <div class="element">Значение</div>
-              <div class="element">График</div>
+              <div class="element" onClick={addShareValue}>Значение</div>
+              <div class="element" onClick={addShareBaseLine}>График</div>
+            </div>
+          </div>
+          <div class="dropdown">
+            <button class="dropbtn">Металлы
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <div class="element" onClick={addMetalValue}>Значение</div>
+              <div class="element" onClick={addMetalBaseLine}>График</div>
             </div>
           </div>
         </nav>
