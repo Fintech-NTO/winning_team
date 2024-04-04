@@ -2,37 +2,31 @@ import "./Value.css";
 import { ChartContainer, AreaPlot } from '@mui/x-charts';
 import { LinePlot, MarkPlot } from '@mui/x-charts/LineChart';
 import closeImg  from "./../../icons/close.png";
-import { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import axios from "axios";
 import CONST from "../../CONST";
-import { componentsContext } from "../pages/MainPage";
 
 
-function CurrencyValue(props) {
-    // let offsetX;
-    // let offsetY;
-    // let inFocus=false;
-
-    let offsetX = useRef();
-    let offsetY = useRef();
-    let inFocus = useRef(false);
-
-    const move=e=> {
+function ShareValue(props) {
+    let offsetX,offsetY;
+    const move=e=>
+    {
         const el=e.target
-        if (e.pageY-offsetY.current > 41 && inFocus.current) {
-            el.style.left = `${e.pageX-offsetX.current}px`
-            el.style.top = `${e.pageY-offsetY.current}px`
+        if (e.pageY-offsetY > 41) {
+            el.style.left = `${e.pageX-offsetX}px`
+            el.style.top = `${e.pageY-offsetY}px`
         }
     }
-    const add=e=> {
+    const add=e=>
+    {
         const el=e.target
-        offsetX.current=e.clientX-el.getBoundingClientRect().left
-        offsetY.current=e.clientY-el.getBoundingClientRect().top
-        inFocus.current = true;
+        offsetX=e.clientX-el.getBoundingClientRect().left
+        offsetY=e.clientY-el.getBoundingClientRect().top
+        el.addEventListener('mousemove',move)
     }
-    const remove=e=> {
-        const el=e.target;
-        inFocus.current = false;
+    const remove=e=>{
+        const el=e.target
+        el.removeEventListener('mousemove',move)
     }
 
     const [currency, setCurrency] = useState();
@@ -43,26 +37,6 @@ function CurrencyValue(props) {
     const [xAxis, setXAxis] = useState([1, 2, 3, 4, 5, 6, 7]);
     const [currencyProcent, setCurrencyProcent] = useState();
     const [currencyPeriod, setCurrencyPeriod] = useState("week");
-    const [cp, setCp] = useState(["AUD", "week"]);
-    const { components, setComponents } = useContext(componentsContext);
-
-    function removeComponent() {
-        let _components = [];
-        for (let i = 0; i < components.length; i++) {
-            const component = components[i];
-            if (component) {
-                if (component.props.uuid != props.uuid) {
-                    _components.push(component);
-                } else {
-                    _components.push(undefined);
-                }
-            } else {
-                _components.push(undefined);
-            }
-            
-        }
-        setComponents(_components);
-    }
 
     useEffect(()=>{
         axios.get(CONST.apiUrl + "/rates/available_currencies").then((res)=>{
@@ -70,35 +44,11 @@ function CurrencyValue(props) {
             setCurrency(res.data[0]);
             updateData(res.data[0], currencyPeriod);
         })
-        const id = setInterval(() => {
-            // let _currency;
-            // setCurrency((currency) => {
-            //     _currency = currency;
-            //     return currency
-            //   })
-            // let _currencyPeriod;
-            //   setCurrencyPeriod((currencyPeriod) => {
-            //     _currencyPeriod = currencyPeriod;
-            //       return currencyPeriod
-            //     })
-            // console.log(_currency, _currencyPeriod);
-            // if (_currency && _currencyPeriod) {
-            //     updateData(_currency, _currencyPeriod);
-            // }
-            setCp((_cp) => {
-                updateData(_cp[0], _cp[1]);
-                return _cp;
-              })
-          }, 1000)
-          return () => {
-            clearInterval(id)
-          }
-    }, [setCurrency, setCurrencyList])
-
+    }, [setCurrencyList])
 
     function updateData(c, p) {
         let end = new Date();
-        end.setDate(end.getDate());
+        end.setDate(end.getDate())
         end = end.toISOString().split("T")[0];
         let start = new Date();
         if (p == "week") {
@@ -113,6 +63,8 @@ function CurrencyValue(props) {
         }
         axios.get(CONST.apiUrl + "/rates/currency/" + c + "/" + start + "/" + end).then((res)=>{
             let json = res.data;
+            console.log(json);
+            console.log(start, end);
             setCurrencyName(json.name);
             setCurrencyValue(json.currencies[json.currencies.length - 1].price.toFixed(2));
             setCurrencyProcent(((json.currencies[json.currencies.length - 1].price - json.currencies[0].price) / json.currencies[json.currencies.length - 1].price * 100).toFixed(1))
@@ -137,22 +89,18 @@ function CurrencyValue(props) {
 
     function changeCurrency(e) {
         setCurrency(e.target.value);
-        setCp([e.target.value, currencyPeriod]);
-        // updateData(e.target.value, currencyPeriod);
+        updateData(e.target.value, currencyPeriod);
     }
 
     function changePeriod(e) {
         setCurrencyPeriod(e.target.value);
-        setCp([currency, e.target.value]);
-        // updateData(currency, e.target.value);
+        updateData(currency, e.target.value);
     }
 
     return (
-        <div class="number" onMouseMove={move} onMouseDown={add} onMouseUp={remove} onMouseLeave={remove} style={{left: props.left + "px", top: props.top + "px"}}> 
-            <img src={closeImg} alt="" class="close" onClick={removeComponent} />
-            <hr />
+        <div class="number" onClick={props.removeElement} onMouseDown={add} onMouseUp={remove} onMouseLeave={remove} style={{left: props.left + "px", top: props.top + "px"}}> 
+            <hr/>
             {currencyName}
-            {/* {props.uuid} */}
             <select class="name" onChange={changeCurrency}>
             {currencyList && currencyList.map(c => (
                 <option value={c}>{c}</option>
@@ -160,22 +108,22 @@ function CurrencyValue(props) {
             </select>
             <div class="value">{currencyValue} ₽</div>
             <div width="200" height="200">
-                <ChartContainer
-                    width={210}
-                    height={160}
-                    series={[
-                        {
-                            data: currencyChart,
-                            type: 'line',
-                            area: true,
-                            stack: 'total',
-                            color: "#4272DC"
-                        },
-                    ]}
-                    xAxis={[{ scaleType: 'point', data: xAxis }]}
-                >
-                <AreaPlot />
-                </ChartContainer>
+            <ChartContainer
+                width={210}
+                height={160}
+                series={[
+                    {
+                    data: currencyChart,
+                    type: 'line',
+                    area: true,
+                    stack: 'total',
+                    color: "#4272DC"
+                    },
+                ]}
+                xAxis={[{ scaleType: 'point', data: xAxis }]}
+            >
+            <AreaPlot />
+            </ChartContainer>
             </div>
             <div className={currencyProcent > 0 ? "green growth" : "red growth" }>{currencyProcent > 0 ? <>+</> : <></>}{currencyProcent} %</div>
             <select class="period" onChange={changePeriod}>
@@ -187,4 +135,4 @@ function CurrencyValue(props) {
     )
 }
 
-export default CurrencyValue;
+export default ShareValue;

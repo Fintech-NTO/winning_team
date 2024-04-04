@@ -1,7 +1,8 @@
 .number {
     position: absolute;
-    /* display: flex; */
-    /* flex-direction: column; */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 216px;
     height: 366px;
     background-color: white;
@@ -9,10 +10,16 @@
     margin: 16px;
 }
 
+.number .close {
+    width: 16px;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
 .number hr {
-    width: 70%;
-    margin-top: 25px;
-    margin-bottom: 25px;
+    width: 100%;
+    border-top: #C9C9C9 1px solid;
 }
 
 .number * {

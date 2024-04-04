@@ -1,28 +1,37 @@
 import { colors } from "@mui/material";
 import "./BaseLine.css";
+import closeImg  from "./../../icons/close.png";
 import { LineChart } from "@mui/x-charts";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
 import CONST from "../../CONST";
+import { componentsContext } from "../pages/MainPage";
+
+
 
 function CurrencyBaseLine(props) {
-    let offsetX,offsetY;
-    const move=e=>
-    {
+    let offsetX;
+    let offsetY;
+    let inFocus=false;
+
+    const move=e=> {
         const el=e.target
-        el.style.left = `${e.pageX-offsetX}px`
-        el.style.top = `${e.pageY-offsetY}px`
+        if (e.pageY-offsetY > 41 && inFocus) {
+            el.style.left = `${e.pageX-offsetX}px`
+            el.style.top = `${e.pageY-offsetY}px`
+        }
     }
-    const add=e=>
-    {
+    const add=e=> {
         const el=e.target
         offsetX=e.clientX-el.getBoundingClientRect().left
         offsetY=e.clientY-el.getBoundingClientRect().top
-        el.addEventListener('mousemove',move)
+        // el.addEventListener('mousemove',move)
+        inFocus = true;
     }
-    const remove=e=>{
-        const el=e.target
-        el.removeEventListener('mousemove',move)
+    const remove=e=> {
+        const el=e.target;
+        // el.removeEventListener('mousemove',move);
+        inFocus = false;
     }
 
     const [currency, setCurrency] = useState();
@@ -30,17 +39,36 @@ function CurrencyBaseLine(props) {
     const [currencyName, setCurrencyName] = useState();
     const [currencyChart, setCurrencyChart] = useState([0, 0, 0, 0, 0, 0, 0]);
     const [xAxis, setXAxis] = useState([1, 2, 3, 4, 5, 6, 7]);
+    const { components, setComponents } = useContext(componentsContext);
+
     let start = new Date();
     start.setDate(start.getDate() - 8);
     start = start.toISOString().split("T")[0];
-    const [startDate, setStartDate] = useState();
+    const [startDate, setStartDate] = useState(start);
     let end = new Date();
     end.setDate(end.getDate())
     end = end.toISOString().split("T")[0];
-    const [endDate, setEndDate] = useState();
+    const [endDate, setEndDate] = useState(end);
+
+    function removeComponent() {
+        let _components = [];
+        for (let i = 0; i < components.length; i++) {
+            const component = components[i];
+            if (component) {
+                if (component.props.uuid != props.uuid) {
+                    _components.push(component);
+                } else {
+                    _components.push(undefined);
+                }
+            } else {
+                _components.push(undefined);
+            }
+            
+        }
+        setComponents(_components);
+    }
     
     useEffect(()=>{
-        console.log(1);
         axios.get(CONST.apiUrl + "/rates/available_currencies").then((res)=>{
             setCurrencyList(res.data);
             setCurrency(res.data[0]);
@@ -51,8 +79,6 @@ function CurrencyBaseLine(props) {
     function updateData(c, sd, ed) {
         axios.get(CONST.apiUrl + "/rates/currency/" + c + "/" + sd + "/" + ed).then((res)=>{
             let json = res.data;
-            console.log(json);
-            console.log(start, end);
             setCurrencyName(json.name);
             let chart = [];
             let _xAxis = [];
@@ -79,10 +105,10 @@ function CurrencyBaseLine(props) {
         setEndDate(e.target.value);
     }
 
-
     return (
-        <div class="baseline" onMouseDown={add} onMouseUp={remove} onMouseLeave={remove} style={{left: props.left + "px", top: props.top + "px"}}>
-            <hr/>
+        <div class="baseline" onMouseMove={move} onMouseDown={add} onMouseUp={remove} onMouseLeave={remove} style={{left: props.left + "px", top: props.top + "px"}}>
+            <img src={closeImg} alt="" class="close" onClick={removeComponent} />
+            <hr />
             {currencyName}
             <span class="inputs">
                 <select class="name" onChange={changeCurrency}>
