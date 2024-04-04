@@ -7,6 +7,8 @@ import ShareValue from "../data/ShareValue.jsx";
 import ShareBaseLine from "../data/shareBaseLine.jsx";
 import MetalValue from "../data/MetalValue.jsx";
 import MetalBaseLine from "../data/MetalBaseLine.jsx";
+import RateValue from "../data/RateValue.jsx";
+import RateBaseLine from "../data/RateBaseLine.jsx";
 
 export const componentsContext = createContext([]);
 
@@ -68,6 +70,20 @@ function MainPage() {
     setComponents(_components);
   }
 
+  function addRateValue() {
+    let _components = [...components];
+    let uuid = uuidv4();
+    _components.push(<RateValue uuid={uuid}></RateValue>);
+    setComponents(_components);
+  }
+
+  function addRateBaseLine() {
+    let _components = [...components];
+    let uuid = uuidv4();
+    _components.push(<RateBaseLine uuid={uuid}></RateBaseLine>);
+    setComponents(_components);
+  }
+
   function saveDashboard() {
     console.log(JSON.stringify(components))
   }
@@ -81,6 +97,15 @@ function MainPage() {
         <nav>
           {/* <p onClick={addCurrencyValue}>add value</p>
           <p onClick={addCurrencyBaseLine}>add line</p> */}
+          <div class="dropdown">
+            <button class="dropbtn">Ставка ЦБ
+              <i class="fa fa-caret-down"></i>
+            </button>
+            <div class="dropdown-content">
+              <div class="element" onClick={addRateValue}>Значение</div>
+              <div class="element" onClick={addRateBaseLine}>График</div>
+            </div>
+          </div>
           <div class="dropdown">
             <button class="dropbtn">Валюта
               <i class="fa fa-caret-down"></i>
