@@ -16,5 +16,5 @@ def available_for_predict():
 def predict_stock(ticker: str, from_date: str, to_date: str):
     try:
         return predict(ticker, from_date, to_date)
-    except e:
+    except:
         return "Value error!"
