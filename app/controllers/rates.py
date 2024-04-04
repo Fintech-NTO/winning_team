@@ -69,7 +69,7 @@ class RatesController:
             platinum, td = td.text.replace(" ", ""), td.find_next('td')
             palladium = td.text.replace(" ", "")
             metals.append(Metal(code='Au', name='Золото', price=float(gold.replace(",", "."))))
-            metals.append(Metal(code='Ag', name='Золото', price=float(silver.replace(",", "."))))
+            metals.append(Metal(code='Ag', name='Серебро', price=float(silver.replace(",", "."))))
             metals.append(Metal(code='Pt', name='Платина', price=float(platinum.replace(",", "."))))
             metals.append(Metal(code='Pd', name='Палладий', price=float(palladium.replace(",", "."))))
         return metals

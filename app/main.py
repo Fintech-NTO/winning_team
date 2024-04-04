@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 
-from app.routers import rates, russia, export
+from app.routers import rates, russia, export, prediction
 
 app = FastAPI()
 
@@ -20,3 +20,4 @@ app.add_middleware(
 app.include_router(rates.router)
 app.include_router(russia.router)
 app.include_router(export.router)
+app.include_router(prediction.router)
