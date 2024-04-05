@@ -1,0 +1,104 @@
+.baseline {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 640px;
+    height: 366px;
+    background-color: white;
+    border-radius: 16px;
+    margin: 16px;
+    position: absolute;
+    top: 84px;
+    left: 16px;
+}
+
+.baseline .close {
+    width: 16px;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.baseline hr {
+    width: 100%;
+    border-top: #C9C9C9 1px solid;
+}
+
+.baseline .name {
+    border: 1px solid black;
+    border-radius: 10px;
+    text-align: center;
+    outline: none;
+    padding: 10px;
+}
+
+.baseline .inputs {
+    margin-top: 12px;
+    display: flex;
+    width: 85%;
+    justify-content: space-between;
+}
+
+.baseline .inputs input {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
+}
+
+.baseline .inputs *:hover {
+    background-color: #F3F3F3;
+}
+
+.baseline * {
+    background-color: white;
+}
+
+.baseline .value {
+    font-weight: bold;
+    font-size: 200%;
+}
+
+.baseline div {
+    border-radius: 16px;
+}
+
+.baseline .period {
+    margin-bottom: 16px;
+}
+
+.baseline .inputs_bottom {
+    margin-bottom: 12px;
+    display: flex;
+    width: 75%;
+    justify-content: space-between;
+}
+
+.baseline .inputs_bottom input {
+    border: 1px solid black;
+    border-radius: 10px;
+    padding: 10px;
+    outline: none;
+}
+
+.baseline .inputs_bottom *:hover {
+    background-color: #F3F3F3;
+}
+
+.baseline .predictUnderLine {
+    margin-left: auto;
+    z-index: 5;
+    border: none;
+    width: 45%;
+    left: 44%;
+    position: absolute;
+    bottom: 20px;
+}
+
+.baseline .predictUnderLine {
+    
+}
+
+.baseline .predictUnderLine hr {
+    margin-bottom: 5px;
+}

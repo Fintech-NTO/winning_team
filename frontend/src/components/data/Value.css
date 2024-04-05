@@ -1,0 +1,62 @@
+.number {
+    position: absolute;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 216px;
+    height: 366px;
+    background-color: white;
+    border-radius: 16px;
+    top: 84px;
+    left: 16px;
+}
+
+.number .close {
+    width: 16px;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: 10px;
+}
+
+.number hr {
+    width: 100%;
+    border-top: #C9C9C9 1px solid;
+}
+
+.number * {
+    user-select: none;
+}
+
+.number * {
+    background-color: white;
+}
+
+.number .name {
+    border: none;
+    text-align: center;
+    margin-bottom: 12px;
+    outline: none;
+    width: 68px;
+}
+
+
+.number .value {
+    font-weight: bold;
+    font-size: 200%;
+}
+
+.number .green {
+    color: #50B93E;
+}
+
+.number .red {
+    color: #b93e3e;
+}
+
+.number .period {
+    color: #C9C9C9;
+    border: none;
+    text-align: center;
+    margin-bottom: 12px;
+    outline: none;
+}
