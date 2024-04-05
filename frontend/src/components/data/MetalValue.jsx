@@ -37,14 +37,14 @@ function MetalValue(props) {
 
     const [metal, setMetal] = useState("Au");
     const [metalList, setMetalList] = useState(["Au", "Ag", "Pt", "Pd"]);
-    const [metalName, setMetalName] = useState("Серебро");
+    const [metalName, setMetalName] = useState("Золото");
     const [metalValue, setMetalValue] = useState();
     const [metalChart, setMetalChart] = useState([0, 0, 0, 0, 0, 0, 0]);
     const [xAxis, setXAxis] = useState([1, 2, 3, 4, 5, 6, 7]);
     const [metalProcent, setMetalProcent] = useState();
     const [sharePeriod, setSharePeriod] = useState("week");
     const [mp, setMp] = useState(["Au", "week"]);
-    let metalNames = useRef({"Au": "Серебро", "Ag": "Золото", "Pt": "Платина", "Pd": "Палладий"});
+    let metalNames = useRef({"Au": "Золото", "Ag": "Серебро", "Pt": "Платина", "Pd": "Палладий"});
     const { components, setComponents } = useContext(componentsContext);
 
     function removeComponent() {

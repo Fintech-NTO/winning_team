@@ -36,7 +36,7 @@ function MetalBaseLine(props) {
 
     const [metal, setMetal] = useState("Au");
     const [metalList, setMetalList] = useState(["Au", "Ag", "Pt", "Pd"]);
-    const [metalName, setMetalName] = useState("Серебро");
+    const [metalName, setMetalName] = useState("Золото");
     const [metalChart, setMetalChart] = useState([0, 0, 0, 0, 0, 0, 0]);
     const [xAxis, setXAxis] = useState([1, 2, 3, 4, 5, 6, 7]);
     let start = new Date();
@@ -47,7 +47,7 @@ function MetalBaseLine(props) {
     end.setDate(end.getDate())
     end = end.toISOString().split("T")[0];
     const [endDate, setEndDate] = useState(end);
-    let metalNames = useRef({"Au": "Серебро", "Ag": "Золото", "Pt": "Платина", "Pd": "Палладий"});
+    let metalNames = useRef({"Au": "Золото", "Ag": "Серебро", "Pt": "Платина", "Pd": "Палладий"});
     const { components, setComponents } = useContext(componentsContext);
 
     useEffect(() => {

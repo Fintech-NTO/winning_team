@@ -135,7 +135,7 @@ function ShareBaseLinePredict(props) {
                         <option value={c}>{c}</option>
                     ))}
                 </select>
-                <input type="number" onChange={(e) => {setDaysCount(e.target.value)}}/>
+                <input type="number" onChange={(e) => {setDaysCount(e.target.value)}} placeholder="Число дней"/>
                 <input type="button" value="Загрузить" onClick={() => {updateData()}}/>
             </span>
             <div class="predictUnderLine">
