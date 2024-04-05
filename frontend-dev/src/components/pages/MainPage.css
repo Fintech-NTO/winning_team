@@ -79,12 +79,12 @@ nav .element:hover, .dropdown:hover .dropbtn {
     display: none;
     position: absolute;
     z-index: 1;
-    height: 120px;
     padding-top: 10px;
 }
   
   /* Links inside the dropdown */
 .dropdown-content .element {
+    margin-bottom: 10px;
     float: none;
     color: black;
     background-color: white;

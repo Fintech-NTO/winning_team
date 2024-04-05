@@ -4,11 +4,13 @@ import CurrencyBaseLine from "../data/CurrencyBaseLine.jsx";
 import {v4 as uuidv4} from "uuid";
 import { useEffect, useState, useContext, createContext } from "react";
 import ShareValue from "../data/ShareValue.jsx";
-import ShareBaseLine from "../data/shareBaseLine.jsx";
+import ShareBaseLine from "../data/ShareBaseLine.jsx";
 import MetalValue from "../data/MetalValue.jsx";
 import MetalBaseLine from "../data/MetalBaseLine.jsx";
 import RateValue from "../data/RateValue.jsx";
 import RateBaseLine from "../data/RateBaseLine.jsx";
+import ShareBaseLinePredict from "../data/ShareBaseLinePredict.jsx";
+
 
 export const componentsContext = createContext([]);
 
@@ -53,6 +55,13 @@ function MainPage() {
     let _components = [...components];
     let uuid = uuidv4();
     _components.push(<ShareBaseLine uuid={uuid}></ShareBaseLine>);
+    setComponents(_components);
+  }
+
+  function addShareBaseLinePredict() {
+    let _components = [...components];
+    let uuid = uuidv4();
+    _components.push(<ShareBaseLinePredict uuid={uuid}></ShareBaseLinePredict>);
     setComponents(_components);
   }
 
@@ -122,6 +131,7 @@ function MainPage() {
             <div class="dropdown-content">
               <div class="element" onClick={addShareValue}>Значение</div>
               <div class="element" onClick={addShareBaseLine}>График</div>
+              <div class="element" onClick={addShareBaseLinePredict}>Предсказание</div>
             </div>
           </div>
           <div class="dropdown">

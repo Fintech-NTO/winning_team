@@ -84,3 +84,21 @@
 .baseline .inputs_bottom *:hover {
     background-color: #F3F3F3;
 }
+
+.baseline .predictUnderLine {
+    margin-left: auto;
+    z-index: 5;
+    border: none;
+    width: 45%;
+    left: 44%;
+    position: absolute;
+    bottom: 20px;
+}
+
+.baseline .predictUnderLine {
+    
+}
+
+.baseline .predictUnderLine hr {
+    margin-bottom: 5px;
+}
